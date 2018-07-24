@@ -1,0 +1,23 @@
+{
+    "name": "ygalescot/mongodb-bundle",
+    "description": "A simple MongoDB bundle for Symfony",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ygalescot",
+            "email": "youri.gales@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-mongodb": "*",
+        "mongodb/mongodb": "^1.4",
+        "doctrine/common": "^2.7",
+        "symfony/http-kernel": "3.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ygalescot\\MongoDBBundle\\": "src/"
+        }
+    }
+}
