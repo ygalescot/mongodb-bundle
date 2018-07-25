@@ -5,6 +5,7 @@ namespace Ygalescot\MongoDBBundle\Document;
 use MongoDB\BSON\ObjectID;
 use MongoDB\BSON\Persistable;
 use MongoDB\Model\BSONArray;
+use MongoDB\Model\BSONDocument;
 
 abstract class Document implements Persistable
 {
@@ -58,6 +59,8 @@ abstract class Document implements Persistable
             }
             if ($value instanceof BSONArray) {
                 $value = (array)$value;
+            } elseif ($value instanceof BSONDocument) {
+                $value = $this->bsonUnserialize($value);
             }
 
             $this->{$property} = $value;
