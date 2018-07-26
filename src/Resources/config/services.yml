@@ -1,0 +1,3 @@
+services:
+    ygalescot_mongodb.document_manager:
+        class: 'Ygalescot\MongoDBBundle\Manager\DocumentManager'

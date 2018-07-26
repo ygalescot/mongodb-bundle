@@ -5,7 +5,6 @@ namespace Ygalescot\MongoDBBundle\Manager;
 use Doctrine\Common\Annotations\AnnotationReader;
 use MongoDB\Client;
 use Ygalescot\MongoDBBundle\Factory\CollectionRegistry;
-use Ygalescot\MongoDBBundle\Collection\Collection;
 use Ygalescot\MongoDBBundle\Resolver\DocumentMetadataResolver;
 
 class DocumentManager
@@ -28,7 +27,7 @@ class DocumentManager
     /**
      * @var CollectionRegistry
      */
-    private $collectionFactory;
+    private $collectionRegistry;
 
     /**
      * @param string $database
@@ -47,22 +46,18 @@ class DocumentManager
         $this->database = $database;
         $this->client = new Client($uri, $uriOptions, $driverOptions);
         $this->documentMetadataResolver = new DocumentMetadataResolver($annotationReader);
+        $this->collectionRegistry = new CollectionRegistry($this->documentMetadataResolver);
     }
 
     /**
      * @param string $documentClass
+     * @param array $options
      *
-     * @return Collection
-     *
+     * @return \MongoDB\Collection
      * @throws \Exception
      */
-    public function getCollection(string $documentClass)
+    public function getCollection(string $documentClass, array $options = [])
     {
-        return $this->collectionRegistry->getCollection(
-            $this->client,
-            $this->database,
-            $this->documentMetadataResolver->getCollectionName($documentClass),
-            $documentClass
-        );
+        return $this->collectionRegistry->getCollection($this->client, $this->database, $documentClass, $options);
     }
 }

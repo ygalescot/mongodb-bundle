@@ -3,7 +3,6 @@
 namespace Ygalescot\MongoDBBundle\Factory;
 
 use MongoDB\Client;
-use Ygalescot\MongoDBBundle\Collection\Collection;
 use Ygalescot\MongoDBBundle\Resolver\DocumentMetadataResolver;
 
 class CollectionRegistry
@@ -27,19 +26,19 @@ class CollectionRegistry
     }
 
     /**
-     * @param Client $mongoDBClient
+     * @param Client $client
      * @param string $database
-     * @param string $collectionName
      * @param string $documentClass
+     * @param array $options
      *
-     * @return Collection
+     * @return \MongoDB\Collection
+     * @throws \Exception
      */
-    public function getCollection(Client $mongoDBClient, string $database, string $documentClass)
+    public function getCollection(Client $client, string $database, string $documentClass, array $options = [])
     {
         if (empty($this->collections[$documentClass])) {
             $collectionName = $this->documentMetadataResolver->getCollectionName($documentClass);
-            $mongoDBCollection = $mongoDBClient->selectCollection($database, $collectionName);
-            $this->collections[$collectionName] = new Collection($documentClass, $mongoDBCollection);
+            $this->collections[$documentClass] = $client->selectCollection($database, $collectionName, $options);
         }
 
         return $this->collections[$documentClass];
